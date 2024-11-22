@@ -1,0 +1,79 @@
+/*grupo_1_rec.pdf*/
+
+drop database oficina;
+
+create database oficina;
+
+use oficina;
+
+
+create table veiculo (
+    id int not null primary key auto_increment,
+	placa varchar (50) not null,
+    modelo varchar (50) not null,
+    ano varchar (255) not null,
+    cor varchar (25) not null
+);
+
+create table cliente (
+    id int not null primary key auto_increment,
+	nome varchar (50) not null,
+    telefone varchar (50) not null,
+    email varchar (50) not null
+);
+
+create table mecanico (
+    id int not null primary key auto_increment,
+	nome varchar (50) not null,
+    especialidade varchar (50) not null
+);
+
+create table servico (
+    id int not null primary key auto_increment,
+	descricao varchar (50) not null,
+    preco decimal (10, 2) not null
+);
+
+create table ordem_servico (
+    id int not null primary key auto_increment,
+	veiculo_id int not null,
+    foreign key (veiculo_id) references veiculo (id),
+	cliente_id int not null,
+    foreign key (cliente_id) references cliente (id),
+    data_abertura datetime not null,
+    status_ varchar(255)
+);
+
+insert into veiculo ( placa, modelo, ano, cor) values ( "abc-1234", "fiesta","2018","prata");
+insert into veiculo ( placa, modelo, ano, cor) values ( "XYZ-5678", "civic","2018","rosinha");
+
+insert into cliente ( nome, telefone, email ) values ( "Carlos", "123456789", "carlos.silva@unioeste.br" );
+insert into cliente ( nome, telefone, email ) values ( "Ana", "987654321", "ana.carbalho@unioeste.br" );
+
+insert into mecanico ( nome, especialidade) values ("joão","motor");
+
+insert into servico ( descricao, preco ) values ( "troca de óleo", "150,00" );
+insert into servico ( descricao, preco ) values ( "alinhameento", "80,00" );
+
+
+insert into ordem_servico ( veiculo_id, cliente_id, data_abertura, status_) values ( 1, 1,"2024-01-01 00:00:00","aberta");
+
+select * from veiculo;
+select * from cliente;
+select * from servico;
+select * from ordem_servico;
+select * from ordem_servico where status_ ='aberta';
+select * from mecanico where especialidade ='motor';
+
+
+update ordem_servico
+set status_ = "fechada"
+where id = 1;
+
+update servico
+set preco = "100.00"
+where id = 2;
+
+delete from cliente where nome = "Carlos";
+
+alter table ordem_servico add column data_fechamento datetime;
